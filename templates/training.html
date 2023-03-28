@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if "инженер" in speciality or "строитель" in speciality %}
+        <h2>Инженерные симуляторы</h2>
+        <img src="https://starforge.info/wp-content/uploads/2019/7/image-987.jpg" alt="Легкое транспортное судно YT-1760">
+        <div class="alert alert-info">Левое крыло судна</div>
+    {% else %}
+        <h2>Научные симуляторы</h2>
+        <img src="https://starforge.info/wp-content/uploads/2019/7/image-987.jpg" alt="Легкое транспортное судно YT-1760">
+        <div class="alert alert-info">Правое крыло судна</div>
+    {% endif %}
+{% endblock %}
