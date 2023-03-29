@@ -1,5 +1,3 @@
-import datetime
-
 from flask import Flask, render_template, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -78,17 +76,13 @@ def login():
     return render_template("login.html", title="Аварийный доступ", form=form)
 
 
+@app.route("/works_log")
+def works_log():
+    db_sess = db_session.create_session()
+    jobs = db_sess.query(Jobs)
+    return render_template("works_log.html", title="Works log", jobs=jobs)
+
+
 if __name__ == "__main__":
     db_session.global_init("db/mars.db")
-    first_job = Jobs(
-        team_leader=1,
-        job="deployment of residential modules 1 and 2",
-        work_size=15,
-        collaborators="2, 3",
-        start_date=datetime.datetime.now(),
-        is_finished=False
-    )
-    db_sess = db_session.create_session()
-    db_sess.add(first_job)
-    db_sess.commit()
     app.run(host="127.0.0.1", port=8080)

@@ -2,3 +2,12 @@ h4 {
     padding: 20px;
     color: #aaaaaa;
 }
+
+table, tr, td {
+    background-color: #ddbbaa;
+    border: 1px solid black;
+}
+
+td {
+    padding: 5px;
+}
