@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+from data import db_session
+from data.users import User
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "marcomaregasecretkey"
@@ -74,4 +76,17 @@ def login():
 
 
 if __name__ == "__main__":
+    db_session.global_init("db/mars.db")
+    captain = User(
+        surname="Scott",
+        name="Ridley",
+        age=21,
+        position="captain",
+        speciality="research engineer",
+        address="module_1",
+        email="scott_chief@mars.org",
+    )
+    db_sess = db_session.create_session()
+    db_sess.add(captain)
+    db_sess.commit()
     app.run(host="127.0.0.1", port=8080)
