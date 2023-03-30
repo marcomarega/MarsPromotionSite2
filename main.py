@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect
+from flask_login import LoginManager
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
@@ -7,7 +8,17 @@ from data.jobs import Jobs
 from data.users import User
 
 app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 app.config["SECRET_KEY"] = "marcomaregasecretkey"
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    db_sess = db_session.create_session()
+    return db_sess.query(User).get(user_id)
+
 
 specialities = [
     "инженер-исследователь",
