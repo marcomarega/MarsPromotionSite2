@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, EmailField
 from wtforms.validators import DataRequired
 from data import db_session
 from data.jobs import Jobs
@@ -71,7 +71,7 @@ def auto_answer():
     return render_template("auto_answer.html", title="Анкета", answer=answer)
 
 
-class LoginForm(FlaskForm):
+class LoginCriticalForm(FlaskForm):
     astronaut_id = StringField("id астронавта", validators=[DataRequired()])
     astronaut_password = PasswordField("Пароль астронавта", validators=[DataRequired()])
     captain_id = StringField("id капитана", validators=[DataRequired()])
@@ -79,12 +79,12 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Войти")
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login_critical", methods=["GET", "POST"])
 def login():
-    form = LoginForm()
+    form = LoginCriticalForm()
     if form.validate_on_submit():
         return redirect("/")
-    return render_template("login.html", title="Аварийный доступ", form=form)
+    return render_template("form.html", title="Аварийный доступ", form=form)
 
 
 @app.route("/works_log")
@@ -94,6 +94,19 @@ def works_log():
     return render_template("works_log.html", title="Works log", jobs=jobs)
 
 
+class RegisterForm(FlaskForm):
+    surname = StringField("Фамилия", validators=[DataRequired()])
+    name = StringField("Имя", validators=[DataRequired()])
+    age = IntegerField("Возраст", validators=[DataRequired()])
+    position = StringField("Должность", validators=[DataRequired()])
+    speciality = SelectField("Профессия", validators=[DataRequired()], choices=specialities)
+    address = SelectField("Адрес", validators=[DataRequired()])
+    email = EmailField("email", validators=[DataRequired()])
+    password = PasswordField("Пароль", validators=[DataRequired()])
+    password_again = PasswordField("Повторите пароль", validators=[DataRequired()])
+    submit = SubmitField("Зарегистрироваться")
+
+
 if __name__ == "__main__":
     db_session.global_init("db/mars.db")
-    app.run(host="127.0.0.1", port=8080)
+    app.run(host="127.0.0.1", port=8000)
